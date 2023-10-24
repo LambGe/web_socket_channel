@@ -18,7 +18,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
-import 'dart:developer';
 
 import '../exception.dart';
 import 'io_sink.dart';
