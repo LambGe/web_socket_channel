@@ -18,6 +18,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
+import 'dart:developer';
 
 import '../exception.dart';
 import 'io_sink.dart';
@@ -821,7 +822,7 @@ class WebSocketImpl extends Stream with _ServiceObject implements StreamSink {
 
   @override
   Future close([int? code, String? reason]) {
-    print("----------before close1--------");
+    log("----------before close1--------");
     if (_isReservedStatusCode(code)) {
       throw WebSocketChannelException('Reserved status code $code');
     }
@@ -835,11 +836,11 @@ class WebSocketImpl extends Stream with _ServiceObject implements StreamSink {
       //      processed if received.
       //   2) set a timer terminate the connection if a close frame is
       //      not received.
-      print("----------before close2--------");
+      log("----------before close2--------");
       if (!_controller.hasListener && _subscription != null) {
         _controller.stream.drain().catchError((_) => {});
       }
-      print("----------before close3--------");
+      log("----------before close3--------");
       // When closing the web-socket, we no longer accept data.
       _closeTimer ??= Timer(const Duration(seconds: 5), () {
         // Reuse code and reason from the local close.
@@ -848,10 +849,10 @@ class WebSocketImpl extends Stream with _ServiceObject implements StreamSink {
         if (_subscription != null) _subscription!.cancel();
         _controller.close();
         _webSockets.remove(_serviceId);
-        print("----------before close4--------");
+        log("----------before close4--------");
       });
     }
-    print("----------after close--------");
+    log("----------after close--------");
     return _sink.close();
   }
 
